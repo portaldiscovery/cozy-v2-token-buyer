@@ -154,7 +154,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
 
 contract CozyMultiOraclePriceFeedForkTest is Test {
     // On Optimism, this would be the L1Proxy contract which proxies transactions submitted from L1
-    address constant OPTIMISM_NOUNS_EXECUTOR = address(0xBEEF);
+    address constant OWNER = address(0xBEEF);
     uint256 constant PROTECTION_AMOUNT_USD = 1_000_000;
 
     uint256 forkId;
@@ -194,17 +194,17 @@ contract CozyMultiOraclePriceFeedForkTest is Test {
             usdcUsdOracle,
             staleAfterA, // staleness threshold for ETH/USD
             staleAfterB, // staleness threshold for USDC/USD
-            OPTIMISM_NOUNS_EXECUTOR // owner
+            OWNER // owner
         );
 
-        vm.prank(OPTIMISM_NOUNS_EXECUTOR);
+        vm.prank(OWNER);
         bidPriceWAD = 0.02e18; // 2% per unit of protection
         feed.setBidPriceWAD(bidPriceWAD);
 
         uint256 protectionAmountUsdc_ = PROTECTION_AMOUNT_USD * (10 ** set.decimals());
         uint256 ptokensForProtectionAmount_ = set.convertToPTokens(marketId, protectionAmountUsdc_);
 
-        payer = new Payer(OPTIMISM_NOUNS_EXECUTOR, address(ptoken));
+        payer = new Payer(OWNER, address(ptoken));
 
         // Inspired by token-buyer/script/DeployUSDC.s.sol
         tokenBuyer = new TokenBuyer(
@@ -215,8 +215,8 @@ contract CozyMultiOraclePriceFeedForkTest is Test {
             10, // botDiscountBPs
             0, // minAdminBotDiscountBPs
             150, // maxAdminBotDiscountBPs
-            OPTIMISM_NOUNS_EXECUTOR, // owner
-            OPTIMISM_NOUNS_EXECUTOR, // admin
+            OWNER, // owner
+            OWNER, // admin
             address(payer)
         );
     }
@@ -440,7 +440,7 @@ contract CozyMultiOraclePriceFeedForkTest is Test {
 
     function test_integration_setBidPriceGasCost() public {
         uint256 newBidPrice_ = 0.03e18;
-        vm.prank(OPTIMISM_NOUNS_EXECUTOR);
+        vm.prank(OWNER);
         uint256 gasLeftInit_ = gasleft();
         feed.setBidPriceWAD(newBidPrice_);
         assertEq(gasLeftInit_ - gasleft(), 13_751);
