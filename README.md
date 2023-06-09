@@ -1,12 +1,13 @@
 # Cozy Token Buyer Contracts
 
-This repository includes custom Cozy PriceFeeds and deploy scripts for [nounsDAO/token-buyer](https://github.com/nounsDAO/token-buyer).
+This repository includes custom [Cozy V2](https://v2.cozy.finance/) price feeds and deploy scripts for [nounsDAO/token-buyer](https://github.com/nounsDAO/token-buyer).
 
 ## Contracts
 
 - [`CozyMultiOraclePriceFeed`](https://github.com/Cozy-Finance/cozy-token-buyer-v2/blob/main/src/CozyMultiOraclePriceFeed.sol)
 
-  - Returns a price for ETH/PToken using two external oracles (e.g. Chainlink). This PriceFeed is useful for chains where there does not exist an oracle for the specific ETH/underlying asset of the PToken (e.g. ETH/PToken using ETH/USD and USDC/USD for PToken with USDC underlying).
+  - Returns a price for ETH/PToken using two external oracles (e.g. Chainlink). A PToken is an ERC20 that represents protection purchased from a specific Cozy market (e.g. stETH Peg Protection).
+  - This price feed is useful for chains where there does not exist an oracle for the specific ETH/underlying asset of the PToken (e.g. ETH/PToken using ETH/USD and USDC/USD for PToken with USDC underlying).
   - Uses a set `bidPriceWAD` which equals the percentage price per unit of protection (e.g. `0.02e18` for 2%). The owner of the `CozyMultiOraclePriceFeed` can update `bidPriceWAD`.
 
 ## Tests
