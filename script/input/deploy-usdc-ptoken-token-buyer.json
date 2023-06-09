@@ -1,0 +1,11 @@
+{
+  "chainlinkA": "0x13e3Ee699D1909E989722E753853AE30b17e08c5",
+  "chainlinkB": "0x16a9FA2FDa030272Ce99B29CF780dFA30361E0f3",
+  "chainlinkAHeartbeat": 1200,
+  "chainlinkBHeartbeat": 86400,
+  "set": "0x17705474203F7ff7ba8a940c433AB43D1F58E249",
+  "ptoken": "0x3b548fbADC2d926AdB7e5A5d44d824a1c7F3614d",
+  "marketId": 3,
+  "protectionPositionInUsd": 1000000,
+  "owner": ""
+}

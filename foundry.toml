@@ -2,5 +2,18 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+solc_version = "0.8.17"
+optimizer_runs = 10000
+optimizer = true
+verbosity = 3
+block_timestamp = 1661305556
+remappings = [
+  "token-buyer/=lib/token-buyer/",
+  "openzeppelin-contracts/=lib/token-buyer/lib/openzeppelin-contracts"
+]
+fs_permissions = [{ access = "read", path = "./script/input"}]
+
+[profile.default.fuzz]
+runs = 1024
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
