@@ -102,6 +102,7 @@ contract CozyMultiOraclePriceFeed is Ownable, IPriceFeed {
         AggregatorV3Interface chainlinkB_,
         uint256 staleAfterChainlinkA_,
         uint256 staleAfterChainlinkB_,
+        uint256 bidPriceWAD_,
         address owner_
     ) {
         set = set_;
@@ -113,6 +114,7 @@ contract CozyMultiOraclePriceFeed is Ownable, IPriceFeed {
         staleAfterChainlinkA = staleAfterChainlinkA_;
         decimalsChainlinkB = chainlinkB.decimals();
         staleAfterChainlinkB = staleAfterChainlinkB_;
+        bidPriceWAD = bidPriceWAD_;
 
         decimalFactorChainlinkA = getDecimalFactor(decimalsChainlinkA);
         decimalFactorChainlinkB = getDecimalFactor(decimalsChainlinkB);

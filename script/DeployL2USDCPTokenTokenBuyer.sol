@@ -90,6 +90,7 @@ contract DeployL2USDCPTokenTokenBuyer is ScriptUtils {
             chainlinkB,
             chainlinkAHeartbeat,
             chainlinkBHeartbeat,
+            0, // Initialize to 0 as governance will update this via proposal execution.
             owner
         );
         console2.log('CozyMultiOraclePriceFeed deployed: ', address(priceFeed_));
