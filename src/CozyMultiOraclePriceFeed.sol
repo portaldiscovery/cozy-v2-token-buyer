@@ -158,7 +158,7 @@ contract CozyMultiOraclePriceFeed is Ownable, IPriceFeed {
         //                    = (1700e8 / 0.99e8) * (1e18 / 0.02e18) * 1e6
         //                    = 85858.585858e6
         // Note: The Set shares the same amount of decimals as the underlying asset
-        uint256 protectionValueInB_ = aPriceWAD_ * 1e18 * 10**decimalsSet / (bPriceWAD_ * bidPriceWAD);
+        uint256 protectionValueInB_ = aPriceWAD_ * 10**WAD_DECIMALS * 10**decimalsSet / (bPriceWAD_ * bidPriceWAD);
         // Return the protection amount converted to PTokens
         return toWAD(set.convertToPTokens(marketId, protectionValueInB_), decimalsSet, decimalFactorSet);
     }
