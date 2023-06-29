@@ -28,8 +28,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkB = new TestChainlinkAggregator(8);
         set = new TestCozySet();
         set.setDecimals(6);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
     }
 
     function test_price_decimalsEqualWAD() public {
@@ -38,8 +37,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkA.setLatestRound(1000e18, block.timestamp);
         chainlinkB.setDecimals(18);
         chainlinkB.setLatestRound(1e18, block.timestamp);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
 
         assertEq(feed.price(), 100e18);
     }
@@ -50,8 +48,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkA.setLatestRound(1000e16, block.timestamp);
         chainlinkB.setDecimals(16);
         chainlinkB.setLatestRound(1e16, block.timestamp);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
 
         assertEq(feed.price(), 100e18);
     }
@@ -62,8 +59,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkA.setLatestRound(1000e21, block.timestamp);
         chainlinkB.setDecimals(21);
         chainlinkB.setLatestRound(1e21, block.timestamp);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
 
         assertEq(feed.price(), 100e18);
     }
@@ -74,8 +70,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkA.setLatestRound(1000e8, block.timestamp);
         chainlinkB.setDecimals(8);
         chainlinkB.setLatestRound(1e8, block.timestamp);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
 
         assertEq(feed.price(), 0);
     }
@@ -88,8 +83,7 @@ contract CozyMultiOraclePriceFeedTest is Test {
         chainlinkA.setLatestRound(1000e8, block.timestamp);
         chainlinkB.setDecimals(8);
         chainlinkB.setLatestRound(1e8, block.timestamp);
-        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, owner);
-        feed.setBidPriceWAD(BID_PRICE);
+        feed = new CozyMultiOraclePriceFeed(set, 0, chainlinkA, chainlinkB, STALE_AFTER, STALE_AFTER, BID_PRICE, owner);
 
         // e.g. If chainlinkA is ETH/USD, chainlinkB is USDC/USD, and USDC is pegged to $1 USD (1e8):
         // USD Price per 1 ETH / bid price percentage = Protection value of PTokens for 1 ETH
@@ -194,6 +188,7 @@ contract CozyMultiOraclePriceFeedForkTest is Test {
             usdcUsdOracle,
             staleAfterA, // staleness threshold for ETH/USD
             staleAfterB, // staleness threshold for USDC/USD
+            0,
             OWNER // owner
         );
 
