@@ -45,31 +45,31 @@ contract DeployL2USDCPTokenTokenBuyer is ScriptUtils {
     IPToken ptoken;
     uint16 marketId;
 
-    uint256 protectionPositionInUsd;
-
     address owner;
 
-    function run(string memory _fileName) public {
+    function run(string memory fileName_) public {
         /**
         ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
         Configuration
         ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
         */
-        string memory _json = readInput(_fileName);
+        string memory json_ = readInput(fileName_);
 
-        chainlinkA = AggregatorV3Interface(_json.readAddress(".chainlinkA"));
-        chainlinkB = AggregatorV3Interface(_json.readAddress(".chainlinkB"));
+        chainlinkA = AggregatorV3Interface(json_.readAddress(".chainlinkA"));
+        chainlinkB = AggregatorV3Interface(json_.readAddress(".chainlinkB"));
 
-        chainlinkAHeartbeat = _json.readUint(".chainlinkAHeartbeat");
-        chainlinkBHeartbeat = _json.readUint(".chainlinkBHeartbeat");
+        chainlinkAHeartbeat = json_.readUint(".chainlinkAHeartbeat");
+        chainlinkBHeartbeat = json_.readUint(".chainlinkBHeartbeat");
 
-        set = ISet(_json.readAddress(".set"));
-        ptoken = IPToken(_json.readAddress(".ptoken"));
-        marketId = uint16(_json.readUint(".marketId"));
+        set = ISet(json_.readAddress(".set"));
+        ptoken = IPToken(json_.readAddress(".ptoken"));
+        marketId = uint16(json_.readUint(".marketId"));
 
-        protectionPositionInUsd = _json.readUint(".protectionPositionInUsd");
+        owner = json_.readAddress(".owner");
 
-        owner = _json.readAddress(".owner");
+        // Sanity check marketId is correct
+        (IPToken ptokenCheck_,,,,,,,,,) = set.markets(marketId);
+        require(ptoken == ptokenCheck_);
 
         /**
         ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -102,15 +102,15 @@ contract DeployL2USDCPTokenTokenBuyer is ScriptUtils {
         console2.log('    staleAfterChainlinkB:', chainlinkBHeartbeat);
         console2.log('    owner:', owner);
 
-        // Assuming USDC pegged to $1 USD at time of deploy
-        uint256 protectionAmountUsdc_ = protectionPositionInUsd * (10 ** ptoken.decimals());
-        uint256 ptokensForProtectionAmount_ = set.convertToPTokens(marketId, protectionAmountUsdc_);
         vm.broadcast();
         TokenBuyer tokenBuyer_ = new TokenBuyer(
             priceFeed_,
-            ptokensForProtectionAmount_, // baselinePaymentTokenAmount
+            // baselinePaymentTokenAmount - There is no specific balance of PTokens the payer needs to have,
+            // set sufficiently high since PToken exchange rate changes over time and all ETH in the
+            // TokenBuyer is expected to be exchanged for PTokens
+            type(uint128).max,
             0, // minAdminBaselinePaymentTokenAmount
-            2 * ptokensForProtectionAmount_, // maxAdminBaselinePaymentTokenAmount
+            type(uint128).max, // maxAdminBaselinePaymentTokenAmount
             0, // botDiscountBPs - For the CozyMultiOraclePriceFeed, bidPriceWAD is the exact price to pay
             0, // minAdminBotDiscountBPs
             150, // maxAdminBotDiscountBPs
@@ -119,10 +119,10 @@ contract DeployL2USDCPTokenTokenBuyer is ScriptUtils {
             address(payer_)
         );
         console2.log('TokenBuyer deployed: ', address(tokenBuyer_));
-        console2.log('    priceFeed:', address(priceFeed_));
-        console2.log('    baselinePaymentTokenAmount:', ptokensForProtectionAmount_);
-        console2.log('    owner:', owner);
-        console2.log('    admin:', owner);
-        console2.log('    payer:', address(payer_));
+        console2.log('    priceFeed:', address(tokenBuyer_.priceFeed()));
+        console2.log('    baselinePaymentTokenAmount:', tokenBuyer_.baselinePaymentTokenAmount());
+        console2.log('    owner:', tokenBuyer_.owner());
+        console2.log('    admin:', tokenBuyer_.admin());
+        console2.log('    payer:', address(tokenBuyer_.payer()));
     }
 }
