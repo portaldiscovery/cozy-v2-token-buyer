@@ -27,6 +27,10 @@ See the [`DeployL2USDCPTokenTokenBuyer`](https://github.com/Cozy-Finance/cozy-to
 
 # Latest deployment
 
+## Optimism
+
 | Contract   | Address |
 |----------- | --------|
-| | |
+| TokenBuyer | 0xdD9e5Dab49d8394660d4Fe2383692448e3944d2b |
+| Payer | 0xc2A9A0D746535cEc8dd841651172396dEa38464C |
+| CozyMultiOraclePriceFeed | 0x31D2CfCFD44e0e1F5c36d065E665b56B6354EA5c |
