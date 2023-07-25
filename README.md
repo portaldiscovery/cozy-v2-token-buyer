@@ -21,6 +21,14 @@ Then run the tests:
 forge test
 ```
 
+## Scripts
+
+This repo includes Forge scripts under `script/` for:
+- Scripts to deploy the token-buyer contracts with Cozy V2 price feeds
+- Scripts to sell PTokens to TokenBuyer
+
+Specific instructions on how to run them is embedded into the comments of each script.
+
 ## Deploy to Optimism
 
 See the [`DeployL2USDCPTokenTokenBuyer`](https://github.com/Cozy-Finance/cozy-token-buyer-v2/blob/main/script/DeployL2USDCPTokenTokenBuyer.sol) script for deploying token-buyer using the [`CozyMultiOraclePriceFeed`](https://github.com/Cozy-Finance/cozy-token-buyer-v2/blob/main/src/CozyMultiOraclePriceFeed.sol) for a PToken with USDC underlying.
